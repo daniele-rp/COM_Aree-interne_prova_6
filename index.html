@@ -1,0 +1,506 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-measure.css">
+        <style>
+        #map {
+            width: 1145px;
+            height: 842px;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/multi-style-layer.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet-measure.js"></script>
+        <script src="data/Corpiidrici_Laghi_DirCE200060_gpkgcopy_1.js"></script>
+        <script src="data/Comuni_AreeInterne_2020_1181copy_2.js"></script>
+        <script src="data/COM_CentriAI2020copy_3.js"></script>
+        <script src="data/REG2021_ITA20copy_4.js"></script>
+        <script src="data/PROV2021_PIE8copy_5.js"></script>
+        <script src="data/REG2021_PIE1copy_6.js"></script>
+        <script>
+        var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+
+            if (e.target.feature.geometry.type === 'LineString') {
+              highlightLayer.setStyle({
+                color: '#ffff00',
+              });
+            } else {
+              highlightLayer.setStyle({
+                fillColor: '#ffff00',
+                fillOpacity: 1
+              });
+            }
+            highlightLayer.openPopup();
+        }
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[43.95570946988721,5.414878674753569],[46.525766582088,10.375067037316258]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        var measureControl = new L.Control.Measure({
+            position: 'topleft',
+            primaryLengthUnit: 'meters',
+            secondaryLengthUnit: 'kilometers',
+            primaryAreaUnit: 'sqmeters',
+            secondaryAreaUnit: 'hectares'
+        });
+        measureControl.addTo(map);
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .innerHTML = '';
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .className += ' fas fa-ruler';
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+            map.setMaxBounds(map.getBounds());
+        }
+        map.createPane('pane_EsriSatellite_wmstilecopy_0');
+        map.getPane('pane_EsriSatellite_wmstilecopy_0').style.zIndex = 400;
+        var layer_EsriSatellite_wmstilecopy_0 = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            pane: 'pane_EsriSatellite_wmstilecopy_0',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 17
+        });
+        layer_EsriSatellite_wmstilecopy_0;
+        map.addLayer(layer_EsriSatellite_wmstilecopy_0);
+        function pop_Corpiidrici_Laghi_DirCE200060_gpkgcopy_1(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">NOME_LAGO</th>\
+                        <td>' + (feature.properties['NOME_LAGO'] !== null ? autolinker.link(feature.properties['NOME_LAGO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Corpiidrici_Laghi_DirCE200060_gpkgcopy_1_0() {
+            return {
+                pane: 'pane_Corpiidrici_Laghi_DirCE200060_gpkgcopy_1',
+                interactive: true,
+            }
+        }
+        function style_Corpiidrici_Laghi_DirCE200060_gpkgcopy_1_1() {
+            return {
+                pane: 'pane_Corpiidrici_Laghi_DirCE200060_gpkgcopy_1',
+                opacity: 1,
+                color: 'rgba(38,89,128,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Corpiidrici_Laghi_DirCE200060_gpkgcopy_1');
+        map.getPane('pane_Corpiidrici_Laghi_DirCE200060_gpkgcopy_1').style.zIndex = 401;
+        map.getPane('pane_Corpiidrici_Laghi_DirCE200060_gpkgcopy_1').style['mix-blend-mode'] = 'normal';
+        var layer_Corpiidrici_Laghi_DirCE200060_gpkgcopy_1 = new L.geoJson.multiStyle(json_Corpiidrici_Laghi_DirCE200060_gpkgcopy_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Corpiidrici_Laghi_DirCE200060_gpkgcopy_1',
+            layerName: 'layer_Corpiidrici_Laghi_DirCE200060_gpkgcopy_1',
+            pane: 'pane_Corpiidrici_Laghi_DirCE200060_gpkgcopy_1',
+            onEachFeature: pop_Corpiidrici_Laghi_DirCE200060_gpkgcopy_1,
+            styles: [style_Corpiidrici_Laghi_DirCE200060_gpkgcopy_1_0,style_Corpiidrici_Laghi_DirCE200060_gpkgcopy_1_1,]
+        });
+        bounds_group.addLayer(layer_Corpiidrici_Laghi_DirCE200060_gpkgcopy_1);
+        map.addLayer(layer_Corpiidrici_Laghi_DirCE200060_gpkgcopy_1);
+        function pop_Comuni_AreeInterne_2020_1181copy_2(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">COMUNE</th>\
+                        <td>' + (feature.properties['COMUNE'] !== null ? autolinker.link(feature.properties['COMUNE'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">COM_AreeInterne_import Foglio1_Classe-AI_COM-2020</th>\
+                        <td>' + (feature.properties['COM_AreeInterne_import Foglio1_Classe-AI_COM-2020'] !== null ? autolinker.link(feature.properties['COM_AreeInterne_import Foglio1_Classe-AI_COM-2020'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">COM_AreeInterne_import Foglio1_MacroClasse-AI_COM-2021</th>\
+                        <td>' + (feature.properties['COM_AreeInterne_import Foglio1_MacroClasse-AI_COM-2021'] !== null ? autolinker.link(feature.properties['COM_AreeInterne_import Foglio1_MacroClasse-AI_COM-2021'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Comuni_AreeInterne_2020_1181copy_2_0() {
+            return {
+                pane: 'pane_Comuni_AreeInterne_2020_1181copy_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(152,125,183,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Comuni_AreeInterne_2020_1181copy_2');
+        map.getPane('pane_Comuni_AreeInterne_2020_1181copy_2').style.zIndex = 402;
+        map.getPane('pane_Comuni_AreeInterne_2020_1181copy_2').style['mix-blend-mode'] = 'normal';
+        var layer_Comuni_AreeInterne_2020_1181copy_2 = new L.geoJson(json_Comuni_AreeInterne_2020_1181copy_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Comuni_AreeInterne_2020_1181copy_2',
+            layerName: 'layer_Comuni_AreeInterne_2020_1181copy_2',
+            pane: 'pane_Comuni_AreeInterne_2020_1181copy_2',
+            onEachFeature: pop_Comuni_AreeInterne_2020_1181copy_2,
+            style: style_Comuni_AreeInterne_2020_1181copy_2_0,
+        });
+        bounds_group.addLayer(layer_Comuni_AreeInterne_2020_1181copy_2);
+        map.addLayer(layer_Comuni_AreeInterne_2020_1181copy_2);
+        function pop_COM_CentriAI2020copy_3(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">COMUNE</th>\
+                        <td>' + (feature.properties['COMUNE'] !== null ? autolinker.link(feature.properties['COMUNE'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Cod.COM_num'] !== null ? autolinker.link(feature.properties['Cod.COM_num'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['COM_2020'] !== null ? autolinker.link(feature.properties['COM_2020'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Classe AI Comuni 2020</th>\
+                        <td>' + (feature.properties['Classe AI Comuni 2020'] !== null ? autolinker.link(feature.properties['Classe AI Comuni 2020'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Macro Classe AI Comuni 2020</th>\
+                        <td>' + (feature.properties['Macro Classe AI Comuni 2020'] !== null ? autolinker.link(feature.properties['Macro Classe AI Comuni 2020'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Aree interne programmazione 2014-2020</th>\
+                        <td>' + (feature.properties['Aree interne programmazione 2014-2020'] !== null ? autolinker.link(feature.properties['Aree interne programmazione 2014-2020'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_COM_CentriAI2020copy_3_0() {
+            return {
+                pane: 'pane_COM_CentriAI2020copy_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(232,113,141,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_COM_CentriAI2020copy_3');
+        map.getPane('pane_COM_CentriAI2020copy_3').style.zIndex = 403;
+        map.getPane('pane_COM_CentriAI2020copy_3').style['mix-blend-mode'] = 'normal';
+        var layer_COM_CentriAI2020copy_3 = new L.geoJson(json_COM_CentriAI2020copy_3, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_COM_CentriAI2020copy_3',
+            layerName: 'layer_COM_CentriAI2020copy_3',
+            pane: 'pane_COM_CentriAI2020copy_3',
+            onEachFeature: pop_COM_CentriAI2020copy_3,
+            style: style_COM_CentriAI2020copy_3_0,
+        });
+        bounds_group.addLayer(layer_COM_CentriAI2020copy_3);
+        function pop_REG2021_ITA20copy_4(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['DEN_REG'] !== null ? autolinker.link(feature.properties['DEN_REG'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_REG2021_ITA20copy_4_0() {
+            return {
+                pane: 'pane_REG2021_ITA20copy_4',
+                opacity: 1,
+                color: 'rgba(54,53,55,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_REG2021_ITA20copy_4');
+        map.getPane('pane_REG2021_ITA20copy_4').style.zIndex = 404;
+        map.getPane('pane_REG2021_ITA20copy_4').style['mix-blend-mode'] = 'normal';
+        var layer_REG2021_ITA20copy_4 = new L.geoJson(json_REG2021_ITA20copy_4, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_REG2021_ITA20copy_4',
+            layerName: 'layer_REG2021_ITA20copy_4',
+            pane: 'pane_REG2021_ITA20copy_4',
+            onEachFeature: pop_REG2021_ITA20copy_4,
+            style: style_REG2021_ITA20copy_4_0,
+        });
+        bounds_group.addLayer(layer_REG2021_ITA20copy_4);
+        function pop_PROV2021_PIE8copy_5(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['DEN_PROV'] !== null ? autolinker.link(feature.properties['DEN_PROV'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['SIGLA'] !== null ? autolinker.link(feature.properties['SIGLA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_PROV2021_PIE8copy_5_0() {
+            return {
+                pane: 'pane_PROV2021_PIE8copy_5',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fillOpacity: 0,
+                interactive: false,
+            }
+        }
+        map.createPane('pane_PROV2021_PIE8copy_5');
+        map.getPane('pane_PROV2021_PIE8copy_5').style.zIndex = 405;
+        map.getPane('pane_PROV2021_PIE8copy_5').style['mix-blend-mode'] = 'normal';
+        var layer_PROV2021_PIE8copy_5 = new L.geoJson(json_PROV2021_PIE8copy_5, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_PROV2021_PIE8copy_5',
+            layerName: 'layer_PROV2021_PIE8copy_5',
+            pane: 'pane_PROV2021_PIE8copy_5',
+            onEachFeature: pop_PROV2021_PIE8copy_5,
+            style: style_PROV2021_PIE8copy_5_0,
+        });
+        bounds_group.addLayer(layer_PROV2021_PIE8copy_5);
+        function pop_REG2021_PIE1copy_6(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['COD_RIP'] !== null ? autolinker.link(feature.properties['COD_RIP'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['COD_REG'] !== null ? autolinker.link(feature.properties['COD_REG'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">DEN_REG</th>\
+                        <td>' + (feature.properties['DEN_REG'] !== null ? autolinker.link(feature.properties['DEN_REG'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Shape_Leng'] !== null ? autolinker.link(feature.properties['Shape_Leng'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Shape_Area'] !== null ? autolinker.link(feature.properties['Shape_Area'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_REG2021_PIE1copy_6_0() {
+            return {
+                pane: 'pane_REG2021_PIE1copy_6',
+                opacity: 1,
+                color: 'rgba(54,53,55,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0, 
+                fillOpacity: 0,
+                interactive: false,
+            }
+        }
+        map.createPane('pane_REG2021_PIE1copy_6');
+        map.getPane('pane_REG2021_PIE1copy_6').style.zIndex = 406;
+        map.getPane('pane_REG2021_PIE1copy_6').style['mix-blend-mode'] = 'normal';
+        var layer_REG2021_PIE1copy_6 = new L.geoJson(json_REG2021_PIE1copy_6, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_REG2021_PIE1copy_6',
+            layerName: 'layer_REG2021_PIE1copy_6',
+            pane: 'pane_REG2021_PIE1copy_6',
+            onEachFeature: pop_REG2021_PIE1copy_6,
+            style: style_REG2021_PIE1copy_6_0,
+        });
+        bounds_group.addLayer(layer_REG2021_PIE1copy_6);
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'<img src="legend/REG2021_PIE1copy_6.png" /> REG-2021_PIE-1 copy': layer_REG2021_PIE1copy_6,'<img src="legend/PROV2021_PIE8copy_5.png" /> PROV-2021_PIE-8 copy': layer_PROV2021_PIE8copy_5,'<img src="legend/REG2021_ITA20copy_4.png" /> REG-2021_ITA-20 copy': layer_REG2021_ITA20copy_4,'<img src="legend/COM_CentriAI2020copy_3.png" /> COM_Centri A.I. 2020 copy': layer_COM_CentriAI2020copy_3,'<img src="legend/Comuni_AreeInterne_2020_1181copy_2.png" /> Comuni_Aree-Interne_2020_1181 copy': layer_Comuni_AreeInterne_2020_1181copy_2,'<img src="legend/Corpiidrici_Laghi_DirCE200060_gpkgcopy_1.png" /> Corpi idrici_Laghi_Dir.CE 2000.60_gpkg copy': layer_Corpiidrici_Laghi_DirCE200060_gpkgcopy_1,"Esri Satellite_wms-tile copy": layer_EsriSatellite_wmstilecopy_0,},{collapsed:false}).addTo(map);L.control.scale({position: 'bottomleft', maxWidth: 100, metric: true, imperial: false, updateWhenIdle: false}).addTo(map);
+        setBounds();
+        var i = 0;
+        layer_REG2021_ITA20copy_4.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((exp_label_REG2021_ITA20copy_4_eval_expression(context) !== null?String('<div style="color: #000000; font-size: 10pt; font-family: \'Calibri\', sans-serif;">' + exp_label_REG2021_ITA20copy_4_eval_expression(context)) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_REG2021_ITA20copy_4'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        var i = 0;
+        layer_PROV2021_PIE8copy_5.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['SIGLA'] !== null?String('<div style="color: #000000; font-size: 12pt; font-family: \'Calibri\', sans-serif;">' + layer.feature.properties['SIGLA']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_PROV2021_PIE8copy_5'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        var i = 0;
+        layer_REG2021_PIE1copy_6.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((exp_label_REG2021_PIE1copy_6_eval_expression(context) !== null?String('<div style="color: #000000; font-size: 10pt; font-family: \'Calibri\', sans-serif;">' + exp_label_REG2021_PIE1copy_6_eval_expression(context)) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_REG2021_PIE1copy_6'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        resetLabels([layer_Corpiidrici_Laghi_DirCE200060_gpkgcopy_1,layer_REG2021_ITA20copy_4,layer_PROV2021_PIE8copy_5,layer_REG2021_PIE1copy_6]);
+        map.on("zoomend", function(){
+            resetLabels([layer_Corpiidrici_Laghi_DirCE200060_gpkgcopy_1,layer_REG2021_ITA20copy_4,layer_PROV2021_PIE8copy_5,layer_REG2021_PIE1copy_6]);
+        });
+        map.on("layeradd", function(){
+            resetLabels([layer_Corpiidrici_Laghi_DirCE200060_gpkgcopy_1,layer_REG2021_ITA20copy_4,layer_PROV2021_PIE8copy_5,layer_REG2021_PIE1copy_6]);
+        });
+        map.on("layerremove", function(){
+            resetLabels([layer_Corpiidrici_Laghi_DirCE200060_gpkgcopy_1,layer_REG2021_ITA20copy_4,layer_PROV2021_PIE8copy_5,layer_REG2021_PIE1copy_6]);
+        });
+        </script>
+    </body>
+</html>
